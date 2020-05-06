@@ -1,5 +1,6 @@
 # Pokédex-vue
 
+[Demo](https://pokedex-vue-sf.netlify.app/).
 
 ## Project setup
 ```
