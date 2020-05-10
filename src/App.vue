@@ -4,8 +4,11 @@
     <img src="./assets/logo.png" alt="Pokedex logo" id="logo">
     </router-link>
     <transition name="slide" mode='out-in'>
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
     </transition>
+    <footer>
+        <a href="https://pokeapi.co/" target="_blank">pokeapi.co</a>
+    </footer>
   </div>
 </template>
 
@@ -35,6 +38,8 @@ a{
   margin: auto;
   padding: 0 5px;
   max-width: max-content;
+  text-decoration: none;
+  color: #000;
   #logo{
     max-width: 100%;
   }
@@ -48,5 +53,18 @@ a{
 .slide-leave-to{
   opacity: 0;
   // transform: translateX(-30%);
+}
+
+footer{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  a{
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    background-color: #ff0000;
+    border-top-left-radius: 5px;
+  }
 }
 </style>

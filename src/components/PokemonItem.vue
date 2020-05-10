@@ -52,10 +52,6 @@ export default {
   border-radius: 20px;
   background-color: white;
 }
-a{
-  text-decoration: none;
-  color: #000;
-}
 .poke-img{
   width:  100px;
   height: 100px;

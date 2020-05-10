@@ -1,7 +1,7 @@
 <template>
   <div id="pokemons-list">
     <ul>
-      <PokemonItem  v-for='pokemon in pokemons' 
+      <PokemonItem v-for='pokemon in pokemons' 
                     :key='pokemon.name'
                     :index='pokemon.index'
                     :img='pokemon.img'
@@ -55,26 +55,28 @@ export default {
       })
     },
     getData(res){
-      
+      res.data.results.forEach(pokemon => {
+        pokemon.id = pokemon.url.split('/')
+                    .filter(function (string) { return !!string })
+                    .pop();
 
-        res.data.results.forEach(pokemon => {
-          pokemon.id = pokemon.url.split('/')
-                      .filter(function (string) { return !!string })
-                      .pop();
+        pokemon.img = this.newImg + pokemon.id + '.png';
 
-          pokemon.img = this.newImg + pokemon.id + '.png';
+        if (pokemon.id <= 807){
+
           this.pokemons.push(pokemon);
-
           pokemon.index = pokemon.id;
-          
           if(pokemon.id < 100){
             if (pokemon.index < 10) {
-              pokemon.index = '00' + pokemon.index
+            pokemon.index = '00' + pokemon.index
             } else {
-              pokemon.index = '0' + pokemon.index
+            pokemon.index = '0' + pokemon.index
             }
-          }
-        });
+          } 
+        } else{
+          this.next = null;
+        }
+      });
     }
   }
 }
