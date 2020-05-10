@@ -8,10 +8,15 @@
                     :name='pokemon.name'
                     :url='pokemon.url'
       />
-      <Trigger v-show="next !== null"
-               @triggerIntersected='loadMore' 
-       />
+      <li v-if='!show' v-on:click="test" id="show-more" >
+          Show more 
+      </li>
+      <li v-show="next !== null && show" class="trigger">
+        <Trigger @triggerIntersected='loadMore'/>
+      </li>
+      
     </ul>
+    
   </div>
 </template>
 
@@ -30,7 +35,8 @@ export default {
       pokemons: [],
       oldImg: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
       newImg: 'https://pokeres.bastionbot.org/images/pokemon/',
-      next: ''
+      next: '',
+      show: false
     }
   },
   created(){
@@ -51,7 +57,9 @@ export default {
       .get(this.next)
       .then(res => {
         this.next = res.data.next;
-        this.getData(res);
+        if (res.data.results !== undefined){
+          this.getData(res);
+        }
       })
     },
     getData(res){
@@ -77,6 +85,10 @@ export default {
           this.next = null;
         }
       });
+    },
+    test(){
+      this.show = true;
+      
     }
   }
 }
@@ -91,10 +103,26 @@ export default {
   grid-template-columns: repeat(auto-fit , minmax(150px,1fr));
   grid-gap: 10px;
   width: 100%;
-  max-width: 510px;
+  max-width: 1595px;
   margin: 40px auto;
   list-style-type: none;
-    padding: 0 5px;
+  padding: 0 5px;
+}
+
+#show-more{
+  line-height: 160px;
+    text-align: center;
+    padding: 10px;
+    background-color: #356abc;
+    color: #ffcd00;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.trigger{
+  text-align: center;
+  padding: 10px 0;
+  border-radius: 20px;
+  background-color: white;
 }
 
 

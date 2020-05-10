@@ -1,5 +1,5 @@
 <template>
-  <span class="trigger" ref='trigger'>
+  <span id="trigger" ref='trigger'>
     <p>
       loading
       <span class="dot">.</span>
@@ -53,14 +53,9 @@ export default {
 
 <style lang='scss' scoped>
 
-.trigger{
-  position: relative;
-  text-align: center;
-  height: 200px;
-  min-height: 200px;
-  padding: 10px 0;
-  border-radius: 20px;
-  background-color: white;
+#trigger{
+  
+
   i{
     font-size: 60px;
     margin-top: 20px;
