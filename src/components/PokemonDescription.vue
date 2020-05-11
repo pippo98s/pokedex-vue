@@ -46,48 +46,52 @@
           <i class="fas fa-chevron-down down"></i>
         </div>
         <div v-if="secondCheck" id="second">
-          <router-link :to="{
+          <div v-for='pokemon in second' :key='pokemon.name'>
+            <router-link :to="{
                           name: 'pokemon',
                           params:{
-                            name:second.name,
-                            img:second.img,
-                            index:second.index,
-                            url:second.link
+                            name:pokemon.name,
+                            img:pokemon.img,
+                            index:pokemon.index,
+                            url:pokemon.link
                           }
                         }">
-          <img :src="second.img" :alt="second.name" @error='imgCheck'>
-          <h2 >{{second.name}}</h2>
-          <p v-if="second.minLevel !== null">
-            min lv. {{second.minLevel}}
-          </p>
-          <p v-if="second.item !== null">
-            {{second.item.name}}
-          </p>
+            <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
+            <h2 >{{pokemon.name}}</h2>
+            <p v-if="pokemon.minLevel !== null">
+              min lv. {{pokemon.minLevel}}
+            </p>
+            <p v-if="pokemon.item !== null">
+              {{pokemon.item.name}}
+            </p>
           </router-link>
+          </div>
         </div>
         <div v-if="thirdCheck" class="arrow-container">
           <i class="fas fa-chevron-right right"></i>
           <i  class="fas fa-chevron-down down"></i>
         </div>
-        <div v-if="thirdCheck" id="three">
-          <router-link :to="{
+        <div v-if="thirdCheck" id="third">
+          <div v-for='pokemon in third' :key='pokemon.name'>
+            <router-link :to="{
                           name: 'pokemon',
                           params:{
-                            name:third.name,
-                            img:third.img,
-                            index:third.index,
-                            url:third.link
+                            name:pokemon.name,
+                            img:pokemon.img,
+                            index:pokemon.index,
+                            url:pokemon.link
                           }
                         }">
-            <img :src="third.img" :alt="third.name" @error='imgCheck'>
-            <h2 >{{third.name}}</h2>
-            <p v-if="third.minLevel !== null">
-              min lv. {{third.minLevel}}
+            <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
+            <h2 >{{pokemon.name}}</h2>
+            <p v-if="pokemon.minLevel !== null">
+              min lv. {{pokemon.minLevel}}
             </p>
-            <p v-if="third.item !== null">
-              {{third.item.name}}
+            <p v-if="pokemon.item !== null">
+              {{pokemon.item.name}}
             </p>
           </router-link>
+          </div>
         </div>
       </div>
     </section>
@@ -107,7 +111,8 @@ export default {
       secondCheck: false,
       third: [],
       thirdCheck: false,
-      notImg: notImg
+      notImg: notImg,
+      test: []
     }
   },
   props:{
@@ -130,7 +135,7 @@ export default {
   },
   created(){
     this.getData();
-    
+    this.scrollToTop();
   },
   methods: {
     getData(){
@@ -149,43 +154,41 @@ export default {
           .get(res.data.evolution_chain.url)
           .then(res => {
 
-            this.base = res.data.chain.species;
+            const data = res.data.chain;
+            this.base = data.species;
             const index= this.getIndex(this.base.url);
-            this.base.id= index;
-            this.base.img = `https://pokeres.bastionbot.org/images/pokemon/${index}.png`;
-            this.base.link = `https://pokeapi.co/api/v2/pokemon/${index}/`
-            this.base.index = index;
-            this.updateIndex(index ,this.base);
-
+            this.helperEvolution(data.species,
+                            index,
+                            data.evolution_details[0],
+                            data.evolution_details[0]
+            );
             
-            if(res.data.chain.evolves_to[0] !== undefined)
+            if(data.evolves_to[0] !== undefined)
             {
-              this.second = res.data.chain.evolves_to[0].species;
-              const index = this.getIndex(this.second.url);
-              this.second.id= index;
-              this.second.index = index;
-              this.second.img = `https://pokeres.bastionbot.org/images/pokemon/${index}.png`;
-              this.secondCheck = true;
-              this.second.link = `https://pokeapi.co/api/v2/pokemon/${index}/`;
-              this.second.minLevel = res.data.chain.evolves_to[0].evolution_details[0].min_level;
-              this.second.item = res.data.chain.evolves_to[0].evolution_details[0].item;
+              data.evolves_to.forEach(element => {
+                const index = this.getIndex(element.species.url);
+                this.helperEvolution( element.species,
+                                      index,
+                                      element.evolution_details[0].min_level,
+                                      element.evolution_details[0].item
+                );
+                this.secondCheck = true;
+                this.second.push(element.species);
+              });
               
-              this.updateIndex(index ,this.second);
 
-              if(res.data.chain.evolves_to[0].evolves_to[0] !== undefined)
+              if(data.evolves_to[0].evolves_to[0] !== undefined)
               {
-                this.third = res.data.chain.evolves_to[0].evolves_to[0].species;
-                const index = this.getIndex(this.third.url);
-                this.third.id= index;
-                this.third.index = index;
-                this.third.img = `https://pokeres.bastionbot.org/images/pokemon/${index}.png`;
-                this.thirdCheck = true;
-                this.third.link = `https://pokeapi.co/api/v2/pokemon/${index}/`;
-                this.third.minLevel = res.data.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level;
-                this.third.item = res.data.chain.evolves_to[0].evolves_to[0].evolution_details[0].item;
-
-                
-                this.updateIndex(index, this.third);
+                data.evolves_to[0].evolves_to.forEach(element => {
+                  const index = this.getIndex(element.species.url);
+                  this.helperEvolution( element.species,
+                                        index,
+                                        element.evolution_details[0].min_level,
+                                        element.evolution_details[0].item
+                  );
+                  this.thirdCheck = true;
+                  this.third.push(element.species);
+                });
               }
             }
           })
@@ -211,17 +214,30 @@ export default {
           .pop();
       return index;
     },
-    updateIndex(index, selector){
-        if(index < 100){
-          if (selector.index < 10) {
-            selector.index = '00' + index;
-          } else {
-            selector.index = '0' + index;
-          }
+    helperEvolution(element , index , min_level , _item){
+      element.id= index;
+      element.index = index;
+      element.img = `https://pokeres.bastionbot.org/images/pokemon/${index}.png`;
+      element.link = `https://pokeapi.co/api/v2/pokemon/${index}/`;
+
+      if(min_level !== undefined && _item !== undefined){
+        element.minLevel = min_level;
+        element.item = _item;
+      }
+      
+      if(index < 100){
+        if (element.index < 10) {
+          element.index = '00' + index;
+        } else {
+          element.index = '0' + index;
         }
+      }
     },
     imgCheck(e){
       e.target.src = this.notImg;
+    },
+    scrollToTop() {
+      window.scrollTo(0,0);
     }
   }
 }
@@ -326,6 +342,15 @@ export default {
     justify-content: space-around;
     @media screen and (max-width: 680px){
       flex-direction: column;
+    }
+    #base,
+    #second,
+    #third{
+      align-self: center;
+    }
+    #second div,
+    #third div{
+      margin-bottom: 20px;
     }
     div h2{
       text-transform: capitalize;
