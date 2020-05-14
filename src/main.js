@@ -17,7 +17,7 @@ const routes = [
     props: true
   },
   { 
-    path: '/pokemon/:name ',
+    path: '/pokemon/:name/:index/:img/:url',
     name: 'pokemon',
     component: () => import(/* webpackChunkName:"PokemonDescription"*/ './components/PokemonDescription.vue'),
     props: true
