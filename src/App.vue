@@ -4,7 +4,9 @@
     <img src="./assets/logo.png" alt="Pokedex logo" id="logo">
     </router-link>
     <transition name="slide" mode='out-in'>
-    <router-view :key="$route.fullPath"/>
+    <keep-alive>
+      <router-view :key="$route.fullPath"/>
+    </keep-alive>
     </transition>
     <footer>
         <a href="https://pokeapi.co/" target="_blank">pokeapi.co</a>
