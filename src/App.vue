@@ -4,7 +4,7 @@
     <img src="./assets/logo.png" alt="Pokedex logo" id="logo">
     </router-link>
     <transition name="slide" mode='out-in'>
-    <keep-alive>
+    <keep-alive include="PokemonList">
       <router-view :key="$route.fullPath"/>
     </keep-alive>
     </transition>

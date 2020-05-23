@@ -1,100 +1,110 @@
 <template>
-  <div id="description">
-    <section id="header">
+  <div id="container">
+    <div id="description" v-if="flavorCheck && evolutionCheck">
+      <section id="header">
       <h1> {{name}} # {{index}}</h1>
-    </section>
-    <section id="main-info">
-      <div id="left-side">
-        <img :src="img" :alt="name">
-      </div>
-      <div id="right-side">
-        <ul>
-          <li class="stat-item" v-for="(value ,index ) in pokemon.stats" :key="'value'+index">
-            <p class="stat-name">{{value.stat.name}} :</p> 
-            <p class="stat-value">{{value.base_stat}}</p>
-          </li>
-        </ul>
-        <ul class="types-list">
-          <li :class="value.type.name" class="type-item" v-for="(value ,index ) in pokemon.types" :key="'value'+index">
-            {{ value.type.name}}
-          </li>
-        </ul>
-      </div>
-    </section>
-    <section id="definition">
-      <p>{{flavorText[0]}}</p>
-    </section>
-    <section id="evolution-chain">
-      <h2>Evolution chain</h2>
-      <div id='flex-container'>
-        <div id="base">
-          <router-link :to="{
-                          name: 'pokemon',
-                          params:{
-                            name:base.name,
-                            img:base.img,
-                            index:base.index,
-                            url:base.link
-                          }
-                        }">
-            <img :src="base.img" :alt="base.name" @error='imgCheck'>
-            <h2>{{base.name}}</h2>
-          </router-link>
+      </section>
+      <section id="main-info">
+        <div id="left-side">
+          <img :src="img" :alt="name">
         </div>
-        <div v-if="secondCheck" class="arrow-container">
-          <i class="fas fa-chevron-right right"></i>
-          <i class="fas fa-chevron-down down"></i>
+        <div id="right-side">
+          <ul>
+            <li class="stat-item" v-for="(value ,index ) in pokemon.stats" :key="'value'+index">
+              <p class="stat-name">{{value.stat.name}} :</p> 
+              <p class="stat-value">{{value.base_stat}}</p>
+            </li>
+          </ul>
+          <ul class="types-list">
+            <li :class="value.type.name" class="type-item" v-for="(value ,index ) in pokemon.types" :key="'value'+index">
+              {{ value.type.name}}
+            </li>
+          </ul>
         </div>
-        <div v-if="secondCheck" id="second">
-          <div v-for='pokemon in second' :key='pokemon.name'>
+      </section>
+      <section id="definition">
+        <p>{{flavorText[0]}}</p>
+      </section>
+      <section id="evolution-chain">
+        <h2>Evolution chain</h2>
+        <div id='flex-container'>
+          <div id="base">
             <router-link :to="{
-                          name: 'pokemon',
-                          params:{
-                            name:pokemon.name,
-                            img:pokemon.img,
-                            index:pokemon.index,
-                            url:pokemon.link
-                          }
-                        }">
-            <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
-            <h2 >{{pokemon.name}}</h2>
-            <p v-if="pokemon.minLevel !== null">
-              min lv. {{pokemon.minLevel}}
-            </p>
-            <p v-if="pokemon.item !== null">
-              {{pokemon.item.name}}
-            </p>
-          </router-link>
+                            name: 'pokemon',
+                            params:{
+                              name:base.name,
+                              img:base.img,
+                              index:base.index,
+                              url:base.link
+                            }
+                          }">
+              <img :src="base.img" :alt="base.name" @error='imgCheck'>
+              <h2>{{base.name}}</h2>
+            </router-link>
+          </div>
+          <div v-if="secondCheck" class="arrow-container">
+            <i class="fas fa-chevron-right right"></i>
+            <i class="fas fa-chevron-down down"></i>
+          </div>
+          <div v-if="secondCheck" id="second">
+            <div v-for='pokemon in second' :key='pokemon.name'>
+              <router-link :to="{
+                            name: 'pokemon',
+                            params:{
+                              name:pokemon.name,
+                              img:pokemon.img,
+                              index:pokemon.index,
+                              url:pokemon.link
+                            }
+                          }">
+              <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
+              <h2 >{{pokemon.name}}</h2>
+              <p v-if="pokemon.minLevel !== null">
+                min lv. {{pokemon.minLevel}}
+              </p>
+              <p v-if="pokemon.item !== null">
+                {{pokemon.item.name}}
+              </p>
+            </router-link>
+            </div>
+          </div>
+          <div v-if="thirdCheck" class="arrow-container">
+            <i class="fas fa-chevron-right right"></i>
+            <i  class="fas fa-chevron-down down"></i>
+          </div>
+          <div v-if="thirdCheck" id="third">
+            <div v-for='pokemon in third' :key='pokemon.name'>
+              <router-link :to="{
+                            name: 'pokemon',
+                            params:{
+                              name:pokemon.name,
+                              img:pokemon.img,
+                              index:pokemon.index,
+                              url:pokemon.link
+                            }
+                          }">
+              <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
+              <h2 >{{pokemon.name}}</h2>
+              <p v-if="pokemon.minLevel !== null">
+                min lv. {{pokemon.minLevel}}
+              </p>
+              <p v-if="pokemon.item !== null">
+                {{pokemon.item.name}}
+              </p>
+            </router-link>
+            </div>
           </div>
         </div>
-        <div v-if="thirdCheck" class="arrow-container">
-          <i class="fas fa-chevron-right right"></i>
-          <i  class="fas fa-chevron-down down"></i>
-        </div>
-        <div v-if="thirdCheck" id="third">
-          <div v-for='pokemon in third' :key='pokemon.name'>
-            <router-link :to="{
-                          name: 'pokemon',
-                          params:{
-                            name:pokemon.name,
-                            img:pokemon.img,
-                            index:pokemon.index,
-                            url:pokemon.link
-                          }
-                        }">
-            <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
-            <h2 >{{pokemon.name}}</h2>
-            <p v-if="pokemon.minLevel !== null">
-              min lv. {{pokemon.minLevel}}
-            </p>
-            <p v-if="pokemon.item !== null">
-              {{pokemon.item.name}}
-            </p>
-          </router-link>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
+    <div id="loading-data" v-if="!flavorCheck || !evolutionCheck">
+      <p>
+        loading
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+        <span class="dot">.</span>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -112,7 +122,9 @@ export default {
       third: [],
       thirdCheck: false,
       notImg: notImg,
-      test: []
+      // check load rest data
+      flavorCheck: false,
+      evolutionCheck: false
     }
   },
   props:{
@@ -191,6 +203,7 @@ export default {
                 });
               }
             }
+            this.evolutionCheck = true;
           })
         })
       })
@@ -203,6 +216,7 @@ export default {
         res.data.flavor_text_entries.forEach(text => {
           if(text.language.name === 'en' && check == false){
             this.flavorText.push(text.flavor_text);
+            this.flavorCheck = true;
             check = true;
           }
         });
@@ -244,6 +258,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#container{
+  max-width: 1595px;
+  margin: auto;
+}
+
 #description{
   margin: 30px 0;
 }
@@ -381,6 +400,29 @@ export default {
       }
     }
   } 
+}
+#loading-data{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: #fff;
+  padding: 50px;
+  border-radius: 20px;
+  .dot{
+    animation: dot 1s infinite linear;
+  }
+  @keyframes dot {
+    from{ opacity: 0;}
+    to{opacity: 1;}
+  }
+  .dot:nth-child(2){
+    animation-delay: 0.25s;
+  }
+  .dot:nth-child(3){
+    animation-delay: 0.50s;
+  }
 }
 // type class
 .bug{
