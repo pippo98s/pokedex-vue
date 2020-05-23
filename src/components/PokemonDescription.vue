@@ -402,13 +402,11 @@ export default {
   } 
 }
 #loading-data{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
   background: #fff;
-  padding: 50px;
+  padding: 50px 0;
+  margin: 40px auto;
+  width: 165px;
   border-radius: 20px;
   .dot{
     animation: dot 1s infinite linear;
