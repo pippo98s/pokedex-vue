@@ -68,7 +68,7 @@ export default {
                     .filter(function (string) { return !!string })
                     .pop();
 
-        pokemon.img = this.newImg + pokemon.id + '.png';
+        pokemon.img = this.oldImg + pokemon.id + '.png';
 
         if (pokemon.id <= 807){
 

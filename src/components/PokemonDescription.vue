@@ -124,7 +124,9 @@ export default {
       notImg: notImg,
       // check load rest data
       flavorCheck: false,
-      evolutionCheck: false
+      evolutionCheck: false,
+      oldImg: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
+      newImg: 'https://pokeres.bastionbot.org/images/pokemon/'
     }
   },
   props:{
@@ -231,7 +233,7 @@ export default {
     helperEvolution(element , index , min_level , _item){
       element.id= index;
       element.index = index;
-      element.img = `https://pokeres.bastionbot.org/images/pokemon/${index}.png`;
+      element.img = `${this.oldImg}${index}.png`;
       element.link = `https://pokeapi.co/api/v2/pokemon/${index}/`;
 
       if(min_level !== undefined && _item !== undefined){
