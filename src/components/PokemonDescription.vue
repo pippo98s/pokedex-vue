@@ -33,9 +33,7 @@
                             name: 'pokemon',
                             params:{
                               name:base.name,
-                              img:base.img,
-                              index:base.index,
-                              url:base.link
+                              id: base.id
                             }
                           }">
               <img :src="base.img" :alt="base.name" @error='imgCheck'>
@@ -52,9 +50,7 @@
                             name: 'pokemon',
                             params:{
                               name:pokemon.name,
-                              img:pokemon.img,
-                              index:pokemon.index,
-                              url:pokemon.link
+                              id: pokemon.id
                             }
                           }">
               <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
@@ -78,9 +74,7 @@
                             name: 'pokemon',
                             params:{
                               name:pokemon.name,
-                              img:pokemon.img,
-                              index:pokemon.index,
-                              url:pokemon.link
+                              id: pokemon.id
                             }
                           }">
               <img :src="pokemon.img" :alt="pokemon.name" @error='imgCheck'>
@@ -97,7 +91,7 @@
         </div>
       </section>
     </div>
-    <div id="loading-data" v-if="!flavorCheck || !evolutionCheck">
+    <div id="loading-data" v-else>
       <p>
         loading
         <span class="dot">.</span>
@@ -125,6 +119,7 @@ export default {
       // check load rest data
       flavorCheck: false,
       evolutionCheck: false,
+      img: "",
       oldImg: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/',
       newImg: 'https://pokeres.bastionbot.org/images/pokemon/'
     }
@@ -134,17 +129,21 @@ export default {
       type: String,
       required: true
     },
-    img:{
+    id: {
       type: String,
       required: true
-    },
-    index:{
-      type: String,
-      required: true
-    },
-    url:{
-      type: String,
-      required: true
+    }
+  },
+  computed: {
+    index: function () {
+      if(this.id < 100){
+        if (this.id < 10) {
+        return '00' + this.id
+        } else {
+        return '0' + this.id
+        }
+      }
+      return this.id
     }
   },
   created(){
@@ -154,9 +153,10 @@ export default {
   methods: {
     getData(){
       this.$axios
-      .get(this.url)
+      .get(`https://pokeapi.co/api/v2/pokemon/${this.name}`)
       .then(res => {
         this.pokemon = res.data;
+        this.img = `${this.oldImg}${this.id}.png`
 
         this.getFlavorText(`https://pokeapi.co/api/v2/pokemon-species/${this.pokemon.id}`);
 

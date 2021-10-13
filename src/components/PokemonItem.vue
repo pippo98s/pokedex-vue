@@ -4,9 +4,7 @@
                           name: 'pokemon',
                           params:{
                             name:Name,
-                            img:Img,
-                            index:Index,
-                            url:Url
+                            id:Id,
                           }
                         }">
         <p>#{{ Index}}</p> 
@@ -24,15 +22,15 @@ export default {
     index : String,
     img : String,
     name : String,
-    url : String
+    id: String
   },
   data(){
     return{
       Index : this.index,
       Img : this.img,
       Name : this.name,
-      Url : this.url,
-      notImg: notImg
+      notImg: notImg,
+      Id: this.id
     }
   },
   methods:{

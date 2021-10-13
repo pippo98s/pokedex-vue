@@ -6,9 +6,9 @@
                     :index='pokemon.index'
                     :img='pokemon.img'
                     :name='pokemon.name'
-                    :url='pokemon.url'
+                    :id="pokemon.id"
       />
-      <li v-if='!show' v-on:click="test" id="show-more" >
+      <li v-if='!show' v-on:click="toggleShow" id="show-more" >
           Show more 
       </li>
       <li v-show="next !== null && show" class="trigger">
@@ -86,15 +86,13 @@ export default {
         }
       });
     },
-    test(){
+    toggleShow(){
       this.show = true;
-      
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang='scss' scoped>
 
 
